@@ -1,13 +1,18 @@
 <template>
   <div class="login">
     <div class="container">
-        <img src="../assets/avatar.jpg" alt="" class="avatar">
+      <img src="../assets/avatar.jpg" alt class="avatar" />
       <el-form :model="loginform" :rules="rules" ref="loginform" class="demo-ruleForm">
         <el-form-item prop="username">
-          <el-input v-model="loginform.username" placeholder="请输入用户名" prefix-icon='icon-user'></el-input>
+          <el-input v-model="loginform.username" placeholder="请输入用户名" prefix-icon="icon-user"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginform.password" placeholder="请输入密码" prefix-icon='icon-key' type ='password'></el-input>
+          <el-input
+            v-model="loginform.password"
+            placeholder="请输入密码"
+            prefix-icon="icon-key"
+            type="password"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" class="login-btn" @click="hanlelogin">登录</el-button>
@@ -47,20 +52,31 @@ export default {
     }
   },
   methods: {
-    async hanlelogin () {
-      let res = await login({
-        username: this.loginform.username,
-        password: this.loginform.password
+    hanlelogin () {
+      // 当内容为空的时候不发送请求
+      this.$refs.loginform.validate(async validate => {
+        if (validate) {
+          let res = await login({
+            username: this.loginform.username,
+            password: this.loginform.password
+          })
+          console.log(res)
+
+          if (res.data.message === '登录成功') {
+            // 如果登录成功，存储token
+            localStorage.setItem('heima_back_news_token', res.data.data.token)
+            localStorage.setItem('heima_back_news_userinfo', JSON.stringify(res.data.data.user))
+            let id = res.data.data.user.id
+            // console.log(id)
+            this.$router.push({ path: `/index/${id}` })
+          } else {
+            this.$message.warning(res.data.message)
+          }
+        } else {
+          this.$message.warning('输入不合法')
+          return false
+        }
       })
-      // console.log(res)
-      // 如果登录成功，存储token
-      if (res.data.message === '登录成功') {
-        localStorage.setItem('heima_back_news_token', res.data.data.token)
-        localStorage.setItem('heima_back_news_userinfo', JSON.stringify(res.data.data.user))
-        let id = res.data.data.user.id
-        // console.log(id)
-        this.$router.push({ path: `/index/${id}` })
-      }
     }
   }
 }
