@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '@/views/Login.vue'
 import Index from '@/views/Index.vue'
+import PostList from '@/views/PostList.vue'
+import Welcome from '@/views/Welcome.vue'
 
 Vue.use(VueRouter)
 
@@ -16,8 +18,21 @@ const router = new VueRouter({
     {
       // 主页
       name: 'Index',
-      path: '/index/:id',
-      component: Index
+      path: '/index',
+      component: Index,
+      redirect: { name: 'Welcome' },
+      children: [
+        {
+          name: 'PostList',
+          path: 'postList',
+          component: PostList
+        },
+        {
+          name: 'Welcome',
+          path: 'welcome',
+          component: Welcome
+        }
+      ]
     }
   ]
 })

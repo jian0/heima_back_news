@@ -66,9 +66,9 @@ export default {
             // 如果登录成功，存储token
             localStorage.setItem('heima_back_news_token', res.data.data.token)
             localStorage.setItem('heima_back_news_userinfo', JSON.stringify(res.data.data.user))
-            let id = res.data.data.user.id
+            // let id = res.data.data.user.id
             // console.log(id)
-            this.$router.push({ path: `/index/${id}` })
+            this.$router.push({ name: 'Index' })
           } else {
             this.$message.warning(res.data.message)
           }
