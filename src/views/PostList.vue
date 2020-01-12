@@ -1,57 +1,52 @@
 <template>
   <div class="post">
     <el-breadcrumb separator="/">
-  <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
-  <el-breadcrumb-item>文章管理</el-breadcrumb-item>
-  <el-breadcrumb-item>文章列表</el-breadcrumb-item>
-</el-breadcrumb>
-      <template>
-  <el-table
-    ref="singleTable"
-    :data="postlist"
-    highlight-current-row
-    @current-change="handleCurrentChange"
-    style="width: 100%">
-    <el-table-column
-      type="index"
-      width="50">
-    </el-table-column>
-    <el-table-column
-      property="title"
-      label="标题"
-      width="520">
-    </el-table-column>
-    <el-table-column
-      property="create_date"
-      label="时间"
-      width="220">
-    </el-table-column>
-    <el-table-column
-      property="user.nickname"
-      label="姓名">
-    </el-table-column>
-    <el-table-column
-      property="user.username"
-      label="账号">
-    </el-table-column>
-    <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-  <div style="margin-top: 20px">
-    <el-button @click="setCurrent(tableData[1])">选中第二行</el-button>
-    <el-button @click="setCurrent()">取消选择</el-button>
-  </div>
-</template>
-
+      <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>文章管理</el-breadcrumb-item>
+      <el-breadcrumb-item>文章列表</el-breadcrumb-item>
+    </el-breadcrumb>
+    <template>
+      <el-table
+        ref="singleTable"
+        :data="postlist"
+        highlight-current-row
+        @current-change="handleCurrentChange"
+        style="width: 100%"
+      >
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column property="title" label="标题" width="420"></el-table-column>
+        <el-table-column property="create_date" label="时间" width="220"></el-table-column>
+        <el-table-column property="user.nickname" label="姓名"></el-table-column>
+        <el-table-column property="user.username" label="账号"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)"
+            ></el-button>
+    </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="分享" placement="top">
+            <el-button type="primary" icon="el-icon-share" size="mini"></el-button>
+    </el-tooltip>
+    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+            <el-button
+              icon="el-icon-delete"
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)"
+            ></el-button>
+    </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="margin-top: 20px">
+        <el-button @click="setCurrent(tableData[1])">选中第二行</el-button>
+        <el-button @click="setCurrent()">取消选择</el-button>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -87,5 +82,4 @@ export default {
 </script>
 
 <style>
-
 </style>
