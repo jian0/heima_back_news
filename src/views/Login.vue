@@ -7,10 +7,10 @@
           <el-input v-model="loginform.username" placeholder="请输入用户名" prefix-icon='icon-user'></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginform.password" placeholder="请输入密码" prefix-icon='icon-key'></el-input>
+          <el-input v-model="loginform.password" placeholder="请输入密码" prefix-icon='icon-key' type ='password'></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="login-btn">登录</el-button>
+          <el-button type="primary" class="login-btn" @click="hanlelogin">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -18,12 +18,13 @@
 </template>
 
 <script>
+import { login } from '@/apis/users.js'
 export default {
   data () {
     return {
       loginform: {
-        username: '',
-        password: ''
+        username: '12345',
+        password: '123'
       },
       rules: {
         username: [
@@ -42,6 +43,23 @@ export default {
             trigger: 'blur'
           }
         ]
+      }
+    }
+  },
+  methods: {
+    async hanlelogin () {
+      let res = await login({
+        username: this.loginform.username,
+        password: this.loginform.password
+      })
+      // console.log(res)
+      // 如果登录成功，存储token
+      if (res.data.message === '登录成功') {
+        localStorage.setItem('heima_back_news_token', res.data.data.token)
+        localStorage.setItem('heima_back_news_userinfo', JSON.stringify(res.data.data.user))
+        let id = res.data.data.user.id
+        // console.log(id)
+        this.$router.push({ path: `/index/${id}` })
       }
     }
   }
