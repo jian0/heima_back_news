@@ -3,7 +3,6 @@
     <el-container>
       <el-aside width="200px">
         <el-menu
-          default-active="1-1"
           :unique-opened="true"
           :router="true"
           class="el-menu-vertical-demo"
