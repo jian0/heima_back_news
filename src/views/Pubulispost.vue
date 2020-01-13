@@ -24,7 +24,7 @@
         <!-- -----------------内容------------------- -->
         <el-form-item label="内容:">
           <!-- 富文本框 -->
-          <VueEditor :config="config" v-if="postList.type === 1" ref="getcontent" />
+          <VueEditor :config="config" v-if="postList.type === 1" ref="getcontent"/>
           <!-- 上传视频 -->
           <el-upload
             class="upload-demo"
@@ -45,7 +45,7 @@
             @change="handleCheckAllChange"
           >全选</el-checkbox>
           <div style="margin: 15px 0;"></div>
-          <el-checkbox-group v-model="cateList" @change="handleCheckedCitiesChange">
+          <el-checkbox-group v-model="postList.categories" @change="handleCheckedCitiesChange">
             <el-checkbox v-for="cate in cateList" :label="cate.id" :key="cate.id">{{cate.name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -128,7 +128,7 @@ export default {
     },
     //   封面上传成功时触发
     handlePoster (response) {
-      console.log(response)
+    //   console.log(response)
       this.postList.cover.push({ id: response.data.id })
     },
     //   视频上传成功时触发
@@ -140,27 +140,36 @@ export default {
       let token = localStorage.getItem('heima_back_news_token')
       return { Authorization: token }
     },
+    // 全选或全不选
     handleCheckAllChange (val) {
-      //   this.checkedCities = val ? cityOptions : []
-      //   this.isIndeterminate = false
+    //   console.log(this.postList)
+    //   console.log(val)
+    //   console.log(this.cateList)
+      this.postList.categories = val ? this.cateList.map(value => {
+        return value.id
+      }) : []
+      this.isIndeterminate = false
     },
     handleCheckedCitiesChange (value) {
-      //   let checkedCount = value.length
-      //   this.checkAll = checkedCount === this.cities.length
-      //   this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length
+      console.log(value)
+      console.log(this.cateList)
+
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.cateList.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cateList.length
     },
     publispost () {
       // this.$refs.getcontent.editor.root.innerHTML
       if (this.postList.type === 1) {
         this.postList.content = this.$refs.getcontent.editor.root.innerHTML
       }
-      console.log(this.postList)
+    //   console.log(this.postList)
     }
   },
   async mounted () {
     let res = await getCategory()
     // console.log(res)
-    this.cateList = res.data.data
+    this.cateList = res.data.data.splice(1)
   }
 }
 </script>
