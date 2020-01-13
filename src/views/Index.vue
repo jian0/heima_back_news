@@ -2,6 +2,8 @@
   <div class="index">
     <el-container>
       <el-aside width="200px">
+            <div class="img"></div>
+
         <el-menu
           :unique-opened="true"
           :router="true"
@@ -34,7 +36,7 @@
                 <span>文章列表</span>
               </template>
             </el-menu-item>
-            <el-menu-item index="2-2">
+            <el-menu-item index="/index/pubulispost">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>文章管理</span>
@@ -82,6 +84,12 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.img {
+  background-image: url('../assets/logo(1).png');
+  background-color: #fff;
+  height: 60px;
+  background-size: cover
+}
 .index {
   width: 100%;
   height: 100%;

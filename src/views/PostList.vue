@@ -1,5 +1,6 @@
 <template>
   <div class="post">
+    <!-- 面包屑 -->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>文章管理</el-breadcrumb-item>
@@ -85,7 +86,7 @@ export default {
     },
     async init () {
       let res = await getPostList({ pageIndex: this.pageIndex, pageSize: this.pageSize })
-      console.log(res)
+      // console.log(res)
       this.postlist = res.data.data
       this.pagetotal = res.data.total
     },

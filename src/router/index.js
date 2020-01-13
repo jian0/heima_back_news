@@ -4,11 +4,18 @@ import Login from '@/views/Login.vue'
 import Index from '@/views/Index.vue'
 import PostList from '@/views/PostList.vue'
 import Welcome from '@/views/Welcome.vue'
+import Pubulispost from '@/views/Pubulispost.vue'
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
+    {
+      // 登录
+      name: 'default',
+      path: '/',
+      component: Login
+    },
     {
       // 登录
       name: 'Login',
@@ -31,6 +38,11 @@ const router = new VueRouter({
           name: 'Welcome',
           path: 'welcome',
           component: Welcome
+        },
+        {
+          name: 'Pubulispost',
+          path: 'pubulispost',
+          component: Pubulispost
         }
       ]
     }

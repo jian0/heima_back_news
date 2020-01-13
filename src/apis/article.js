@@ -7,3 +7,10 @@ export const getPostList = (params) => {
     params
   })
 }
+
+// 文章列表
+export const getCategory = () => {
+  return axios({
+    url: '/category'
+  })
+}
