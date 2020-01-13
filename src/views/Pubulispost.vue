@@ -24,14 +24,15 @@
         <!-- -----------------内容------------------- -->
         <el-form-item label="内容:">
           <!-- 富文本框 -->
-          <VueEditor :config="config" v-if="postList.type === 1" ref="getcontent"/>
+          <VueEditor :config="config" v-if="postList.type === 1" ref="getcontent" />
           <!-- 上传视频 -->
           <el-upload
-          class="upload-demo"
-          :headers= 'getToken()'
-          action='http://localhost:3000/upload'
-          :on-success='handleSuccess'
-           v-if="postList.type === 2">
+            class="upload-demo"
+            :headers="getToken()"
+            action="http://localhost:3000/upload"
+            :on-success="handleSuccess"
+            v-if="postList.type === 2"
+          >
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传视频文件</div>
           </el-upload>
@@ -51,7 +52,10 @@
         <!-- -----------------封面------------------- -->
         <el-form-item label="封面:">
           <el-upload
-            action=""
+            action="http://localhost:3000/upload"
+            :on-success="handlePoster"
+            :on-remove="handleRemovePoster"
+            :headers="getToken()"
             list-type="picture-card"
           >
             <i class="el-icon-plus"></i>
@@ -110,9 +114,26 @@ export default {
     }
   },
   methods: {
+    //   移除图片时触发
+    handleRemovePoster (file) {
+      console.log(file)
+      //   根据id删除已经移除的图片、
+      for (let i = 0; i < this.postList.cover.length; i++) {
+        // console.log(this)
+        if (this.postList.cover[i].id === file.response.data.id) {
+          this.postList.cover.splice(i, 1)
+          break
+        }
+      }
+    },
+    //   封面上传成功时触发
+    handlePoster (response) {
+      console.log(response)
+      this.postList.cover.push({ id: response.data.id })
+    },
     //   视频上传成功时触发
     handleSuccess (response) {
-    //   console.log(response)
+      //   console.log(response)
       this.postList.content = 'http://127.0.0.1:3000' + response.data.url
     },
     getToken () {
