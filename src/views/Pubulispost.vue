@@ -26,7 +26,12 @@
           <!-- 富文本框 -->
           <VueEditor :config="config" v-if="postList.type === 1" ref="getcontent"/>
           <!-- 上传视频 -->
-          <el-upload class="upload-demo" action v-if="postList.type === 2">
+          <el-upload
+          class="upload-demo"
+          :headers= 'getToken()'
+          action='http://localhost:3000/upload'
+          :on-success='handleSuccess'
+           v-if="postList.type === 2">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传视频文件</div>
           </el-upload>
@@ -105,6 +110,11 @@ export default {
     }
   },
   methods: {
+    //   视频上传成功时触发
+    handleSuccess (response) {
+    //   console.log(response)
+      this.postList.content = 'http://127.0.0.1:3000' + response.data.url
+    },
     getToken () {
       let token = localStorage.getItem('heima_back_news_token')
       return { Authorization: token }
