@@ -10,14 +10,17 @@
         ref="singleTable"
         :data="postlist"
         highlight-current-row
-        @current-change="handleCurrentChange"
         style="width: 100%"
       >
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column property="title" label="标题" width="420"></el-table-column>
         <el-table-column property="create_date" label="时间" width="220"></el-table-column>
         <el-table-column property="user.nickname" label="姓名"></el-table-column>
-        <el-table-column property="user.username" label="账号"></el-table-column>
+        <el-table-column property="type" label="类型">
+          <template slot-scope="scope">
+            {{scope.row.type===1?'文章':'视频'}}
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" content="编辑" placement="top">
@@ -42,11 +45,16 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="margin-top: 20px">
-        <el-button @click="setCurrent(tableData[1])">选中第二行</el-button>
-        <el-button @click="setCurrent()">取消选择</el-button>
-      </div>
     </template>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageIndex"
+      :page-sizes="[2, 4, 6, 8]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pagetotal">
+    </el-pagination>
   </div>
 </template>
 
@@ -56,26 +64,38 @@ export default {
   data () {
     return {
       postlist: [],
-      currentRow: null
+      pageIndex: 1,
+      pageSize: 2,
+      pagetotal: 0
+
     }
   },
   async mounted () {
-    let res = await getPostList()
-    console.log(res)
-    this.postlist = res.data.data
+    this.init()
   },
   methods: {
     setCurrent (row) {
       this.$refs.singleTable.setCurrentRow(row)
-    },
-    handleCurrentChange (val) {
-      this.currentRow = val
     },
     handleEdit (index, row) {
       console.log(index, row)
     },
     handleDelete (index, row) {
       console.log(index, row)
+    },
+    async init () {
+      let res = await getPostList({ pageIndex: this.pageIndex, pageSize: this.pageSize })
+      console.log(res)
+      this.postlist = res.data.data
+      this.pagetotal = res.data.total
+    },
+    handleSizeChange (val) {
+      this.pageSize = val
+      this.init()
+    },
+    handleCurrentChange (val) {
+      this.pageIndex = val
+      this.init()
     }
   }
 }

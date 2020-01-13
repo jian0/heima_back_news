@@ -1,8 +1,9 @@
 import axios from '@/utils/myaxios.js'
 
 // 文章列表
-export const getPostList = () => {
+export const getPostList = (params) => {
   return axios({
-    url: '/post'
+    url: '/post',
+    params
   })
 }
