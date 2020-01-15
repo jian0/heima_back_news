@@ -33,9 +33,9 @@
             ></el-button>
     </el-tooltip>
             <el-tooltip class="item" effect="dark" content="分享" placement="top">
-            <el-button type="primary" icon="el-icon-share" size="mini"></el-button>
+            <el-button type="primary" icon="el-icon-share" size="mini"  @click="dialogFormVisible = true"></el-button>
     </el-tooltip>
-    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+    <el-tooltip class="item" effect="dark" content="删除" placement="top" >
             <el-button
               icon="el-icon-delete"
               size="mini"
@@ -56,6 +56,23 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="pagetotal">
     </el-pagination>
+  <el-dialog title="分享" :visible.sync="dialogFormVisible">
+  <el-form>
+    <el-form-item label="分享用户" :label-width="'100px'">
+      <el-input auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="分享内容" :label-width="'100px'">
+      <el-select placeholder="请选择活动区域">
+        <el-option label="区域一" value="shanghai"></el-option>
+        <el-option label="区域二" value="beijing"></el-option>
+      </el-select>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" >确 定</el-button>
+  </div>
+</el-dialog>
   </div>
 </template>
 
@@ -64,6 +81,7 @@ import { getPostList } from '@/apis/article.js'
 export default {
   data () {
     return {
+      dialogFormVisible: false,
       postlist: [],
       pageIndex: 1,
       pageSize: 2,
@@ -75,13 +93,27 @@ export default {
     this.init()
   },
   methods: {
+    handleDelete (index, row) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     setCurrent (row) {
       this.$refs.singleTable.setCurrentRow(row)
     },
     handleEdit (index, row) {
-      console.log(index, row)
-    },
-    handleDelete (index, row) {
       console.log(index, row)
     },
     async init () {

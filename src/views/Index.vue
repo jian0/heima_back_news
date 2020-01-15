@@ -39,7 +39,7 @@
             <el-menu-item index="/index/pubulispost">
               <template slot="title">
                 <i class="el-icon-location"></i>
-                <span>文章管理</span>
+                <span>文章发布</span>
               </template>
             </el-menu-item>
           </el-submenu>

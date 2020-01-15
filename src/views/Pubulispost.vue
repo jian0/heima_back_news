@@ -12,7 +12,7 @@
       <el-form label-width="80px">
         <!-- ---------------标题--------------------- -->
         <el-form-item label="标题:">
-          <el-input></el-input>
+          <el-input v-model="postList.title"></el-input>
         </el-form-item>
         <!-- ----------------类型-------------------- -->
         <el-form-item label="类型:">
@@ -151,9 +151,8 @@ export default {
       this.isIndeterminate = false
     },
     handleCheckedCitiesChange (value) {
-      console.log(value)
-      console.log(this.cateList)
-
+    //   console.log(value)
+    //   console.log(this.cateList)
       let checkedCount = value.length
       this.checkAll = checkedCount === this.cateList.length
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.cateList.length
