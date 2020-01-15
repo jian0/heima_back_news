@@ -40,8 +40,9 @@ const router = new VueRouter({
           component: Welcome
         },
         {
+          // 发布文章
           name: 'Pubulispost',
-          path: 'pubulispost',
+          path: 'pubulispost/:id?',
           component: Pubulispost
         }
       ]

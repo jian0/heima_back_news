@@ -14,7 +14,7 @@
         style="width: 100%"
       >
         <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column property="title" label="标题" width="420"></el-table-column>
+        <el-table-column property="title" label="标题" width="420" ></el-table-column>
         <el-table-column property="create_date" label="时间" width="220"></el-table-column>
         <el-table-column property="user.nickname" label="姓名"></el-table-column>
         <el-table-column property="type" label="类型">
@@ -113,8 +113,9 @@ export default {
     setCurrent (row) {
       this.$refs.singleTable.setCurrentRow(row)
     },
-    handleEdit (index, row) {
-      console.log(index, row)
+    async handleEdit (index, row) {
+      // console.log(index, row)
+      this.$router.push({ path: `pubulispost/${row.id}` })
     },
     async init () {
       let res = await getPostList({ pageIndex: this.pageIndex, pageSize: this.pageSize })

@@ -8,9 +8,16 @@ export const getPostList = (params) => {
   })
 }
 
-// 文章列表
+// 栏目列表
 export const getCategory = () => {
   return axios({
     url: '/category'
+  })
+}
+
+// 文章详情
+export const getPostListById = (id) => {
+  return axios({
+    url: `/post/${id}`
   })
 }

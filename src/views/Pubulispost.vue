@@ -57,6 +57,7 @@
             :on-remove="handleRemovePoster"
             :headers="getToken()"
             list-type="picture-card"
+            :file-list="postList.cover"
           >
             <i class="el-icon-plus"></i>
           </el-upload>
@@ -71,7 +72,7 @@
 <script>
 import VueEditor from 'vue-word-editor'
 import 'quill/dist/quill.snow.css'
-import { getCategory } from '@/apis/article.js'
+import { getCategory, getPostListById } from '@/apis/article.js'
 export default {
   components: {
     VueEditor
@@ -168,7 +169,32 @@ export default {
   async mounted () {
     let res = await getCategory()
     // console.log(res)
+    // console.log(this.cateList)
     this.cateList = res.data.data.splice(1)
+    // console.log(this.$route.params)
+    // 标题和类型已经双向绑定了，获取数据的时候自动渲染出来
+    let id = this.$route.params.id
+    let post = await getPostListById(id)
+    this.postList = post.data.data
+    // console.log(this.cateList)
+    console.log(post)
+
+    // 渲染文本框的内容
+    if (this.postList.type === 1) {
+      var quill = this.$refs.getcontent.editor
+      quill.clipboard.dangerouslyPasteHTML(0, this.postList.content)
+    }
+    // 渲染多选框组
+    this.postList.categories = this.postList.categories.map(value => {
+      return value.id
+    })
+    // console.log(this.postList)
+    // 渲染封面
+    this.postList.cover.map(v => {
+      if (v.url.indexOf('http') === -1) {
+        v.url = 'http://127.0.0.1:3000' + v.url
+      }
+    })
   }
 }
 </script>
